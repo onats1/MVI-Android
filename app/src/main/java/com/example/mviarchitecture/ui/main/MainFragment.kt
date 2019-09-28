@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.mviarchitecture.R
+import com.example.mviarchitecture.ui.main.state.MainStateEvent
 import java.lang.Exception
 
 
@@ -22,6 +23,7 @@ class MainFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
@@ -40,11 +42,13 @@ class MainFragment : Fragment(){
         viewModel.dataState.observe(viewLifecycleOwner, Observer {dataState ->
 
             println("DEBUG: Data state ${dataState}")
-            dataState.blogPosts?.let {
+            dataState.blogPosts?.let {blogPosts ->
+                viewModel.setBlogListData(blogPosts)
 
             }
 
-            dataState.user?.let {
+            dataState.user?.let {blogUser ->
+                viewModel.setBlogUser(blogUser)
 
             }
 
@@ -57,13 +61,10 @@ class MainFragment : Fragment(){
             }
 
             dataState.user?.let {
-
+                println(it.email)
             }
         })
     }
-
-
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -71,6 +72,18 @@ class MainFragment : Fragment(){
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.get_blogs -> getBlogEvent()
+            R.id.get_user -> getUserEvent()
+        }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun getUserEvent() {
+        viewModel.setStateEvent(MainStateEvent.GetUserEvent("1"))
+    }
+
+    private fun getBlogEvent() {
+        viewModel.setStateEvent(MainStateEvent.GetBlogPostEvent())
     }
 }

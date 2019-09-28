@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun showFragment(){
+    private fun showFragment(){
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.fragment_container,

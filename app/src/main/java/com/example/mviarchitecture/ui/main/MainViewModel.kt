@@ -24,12 +24,30 @@ class MainViewModel : ViewModel(){
     private fun handleStateEvent(stateEvent: MainStateEvent): LiveData<MainViewState>{
 
         return when(stateEvent){
+            
             is MainStateEvent.GetUserEvent -> {
-                AbsentLiveData.create()
+
+               object: LiveData<MainViewState>(){
+                   override fun onActive() {
+                       super.onActive()
+                       value = MainViewState().apply {
+                           user = User("email@user.com", "user1", "fineboy.image")
+                       }
+                   }
+               }
             }
 
             is MainStateEvent.GetBlogPostEvent -> {
-                AbsentLiveData.create()
+
+                object: LiveData<MainViewState>(){
+                    override fun onActive() {
+                        super.onActive()
+                        val blogPosts = ArrayList<BlogPost>()
+                        blogPosts.add(BlogPost().apply {
+
+                        })
+                    }
+                }
             }
 
             is MainStateEvent.None -> {
@@ -62,4 +80,5 @@ class MainViewModel : ViewModel(){
     fun setStateEvent(event: MainStateEvent){
         _stateEvent.value = event
     }
+
 }
