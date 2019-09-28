@@ -6,9 +6,11 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.mviarchitecture.models.BlogPost
 import com.example.mviarchitecture.models.User
+import com.example.mviarchitecture.repository.Repository
 import com.example.mviarchitecture.ui.main.state.MainStateEvent
 import com.example.mviarchitecture.ui.main.state.MainViewState
 import com.example.mviarchitecture.utils.AbsentLiveData
+import com.example.mviarchitecture.utils.DataState
 
 class MainViewModel : ViewModel(){
 
@@ -16,46 +18,27 @@ class MainViewModel : ViewModel(){
     private val _viewState:  MutableLiveData<MainViewState> = MutableLiveData()
 
     val viewState: LiveData<MainViewState>  get() = _viewState
-    val dataState: LiveData<MainViewState> = Transformations
+    val dataState: LiveData<DataState<MainViewState>> = Transformations
         .switchMap(_stateEvent){
             handleStateEvent(it)
         }
 
-    private fun handleStateEvent(stateEvent: MainStateEvent): LiveData<MainViewState>{
+    private fun handleStateEvent(stateEvent: MainStateEvent): LiveData<DataState<MainViewState>>{
 
         return when(stateEvent){
             
             is MainStateEvent.GetUserEvent -> {
-
-               object: LiveData<MainViewState>(){
-                   override fun onActive() {
-                       super.onActive()
-                       value = MainViewState().apply {
-                           user = User("email@user.com", "user1", "fineboy.image")
-                       }
-                   }
-               }
+              Repository.getUser(stateEvent.userId)
             }
 
             is MainStateEvent.GetBlogPostEvent -> {
-
-                object: LiveData<MainViewState>(){
-                    override fun onActive() {
-                        super.onActive()
-                        val blogPosts = ArrayList<BlogPost>()
-                        blogPosts.add(BlogPost().apply {
-
-                        })
-                    }
-                }
+               Repository.getBlogPost()
             }
 
             is MainStateEvent.None -> {
                 AbsentLiveData.create()
             }
         }
-
-
     }
 
     fun setBlogListData(blogPost: List<BlogPost>){
@@ -71,7 +54,7 @@ class MainViewModel : ViewModel(){
     }
 
 
-    fun getCurrentViewStateOrNew(): MainViewState{
+    private fun getCurrentViewStateOrNew(): MainViewState{
         return viewState.value?.let {
             it
         }?: MainViewState()
