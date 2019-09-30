@@ -19,15 +19,12 @@ import java.lang.Exception
 
 class MainFragment : Fragment(){
 
-    lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: MainViewModel
 
-    lateinit var dataStateListener: DataStateListener
+    private lateinit var dataStateListener: DataStateListener
 
-    lateinit var recyclerAdapter: MainRecyclerAdapter
+    private lateinit var recyclerAdapter: MainRecyclerAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,6 +63,9 @@ class MainFragment : Fragment(){
         }
     }
 
+    /**
+     * This method sets the user details to the fragment ui
+     * */
     private fun setUserDetails(user: User){
         email.text = user.email
         username.text = user.username
@@ -77,6 +77,13 @@ class MainFragment : Fragment(){
         }
     }
 
+    /**
+     * This method subscribes and listens to the livedata objects present in the viewmodel.
+     * With MVI architecture, we make use of two major livedata objects. One wraps the viewState
+     * which is like the single source of truth that the ui makes use of while the other is the one that
+     * gets the state of the data being stored in the viewstate. ie. The data state gets the set information
+     * and then returns it to the viewmodel which then sets it to the viewstate.
+     * */
     private fun subscribeObservers(){
 
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
@@ -85,13 +92,13 @@ class MainFragment : Fragment(){
 
             dataState.data?.let { event ->
 
-                event.getContentIfNotHandled()?.let {
+                event.getContentIfNotHandled()?.let { data ->
 
-                    it.blogPosts?.let {
+                    data.blogPosts?.let {
                         viewModel.setBlogListData(it)
                     }
 
-                    it.user?.let {
+                    data.user?.let {
                         viewModel.setBlogUser(it)
                     }
                 }
@@ -101,13 +108,13 @@ class MainFragment : Fragment(){
 
         })
 
-        viewModel.viewState.observe(viewLifecycleOwner, Observer { dataState ->
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
 
-            dataState.blogPosts?.let {
+            viewState.blogPosts?.let {
                 recyclerAdapter.submitList(it)
             }
 
-            dataState.user?.let {
+            viewState.user?.let {
                 println(it.email)
                 setUserDetails(
                     user = it
@@ -134,6 +141,6 @@ class MainFragment : Fragment(){
     }
 
     private fun getBlogEvent() {
-        viewModel.setStateEvent(MainStateEvent.GetBlogPostEvent())
+        viewModel.setStateEvent(MainStateEvent.GetBlogPostEvent)
     }
 }

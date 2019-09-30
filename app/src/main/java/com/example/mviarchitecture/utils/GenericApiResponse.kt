@@ -56,6 +56,6 @@ sealed class GenericApiResponse<T> {
  */
 class ApiEmptyResponse<T> : GenericApiResponse<T>()
 
-data class ApiSuccessResponse<T>(val body: T) : GenericApiResponse<T>() {}
+data class ApiSuccessResponse<T>(val body: T) : GenericApiResponse<T>()
 
 data class ApiErrorResponse<T>(val errorMessage: String) : GenericApiResponse<T>()

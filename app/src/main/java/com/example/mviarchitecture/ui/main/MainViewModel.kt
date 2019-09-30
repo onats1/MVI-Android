@@ -8,6 +8,7 @@ import com.example.mviarchitecture.models.BlogPost
 import com.example.mviarchitecture.models.User
 import com.example.mviarchitecture.repository.Repository
 import com.example.mviarchitecture.ui.main.state.MainStateEvent
+import com.example.mviarchitecture.ui.main.state.MainStateEvent.*
 import com.example.mviarchitecture.ui.main.state.MainViewState
 import com.example.mviarchitecture.utils.AbsentLiveData
 import com.example.mviarchitecture.utils.DataState
@@ -27,15 +28,15 @@ class MainViewModel : ViewModel(){
 
         return when(stateEvent){
             
-            is MainStateEvent.GetUserEvent -> {
+            is GetUserEvent -> {
               Repository.getUser(stateEvent.userId)
             }
 
-            is MainStateEvent.GetBlogPostEvent -> {
+            is GetBlogPostEvent -> {
                Repository.getBlogPost()
             }
 
-            is MainStateEvent.None -> {
+            is None -> {
                 AbsentLiveData.create()
             }
         }
