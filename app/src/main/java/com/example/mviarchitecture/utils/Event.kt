@@ -20,7 +20,7 @@ class Event<T>(private val content: T) {
     /**
      * Returns the content, even if it's already been handled.
      */
-    fun peekContent(): T = content
+    //fun peekContent(): T = content
 
     override fun toString(): String {
         return "Event(content=$content,hasBeenHandled=$hasBeenHandled)"

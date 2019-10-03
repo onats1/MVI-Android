@@ -12,7 +12,7 @@ import retrofit2.Response
 sealed class GenericApiResponse<T> {
 
     companion object {
-        private val TAG: String = "AppDebug"
+        private const val TAG: String = "AppDebug"
 
 
         fun <T> create(error: Throwable): ApiErrorResponse<T> {
@@ -21,23 +21,22 @@ sealed class GenericApiResponse<T> {
 
         fun <T> create(response: Response<T>): GenericApiResponse<T> {
 
-            Log.d(TAG, "GenericApiResponse: response: ${response}")
+            Log.d(TAG, "GenericApiResponse: response: $response")
             Log.d(TAG, "GenericApiResponse: raw: ${response.raw()}")
             Log.d(TAG, "GenericApiResponse: headers: ${response.headers()}")
             Log.d(TAG, "GenericApiResponse: message: ${response.message()}")
 
             if(response.isSuccessful){
                 val body = response.body()
-                if (body == null || response.code() == 204) {
-                    return ApiEmptyResponse()
-                }
-                else if(response.code() == 401){
-                    return ApiErrorResponse("401 Unauthorized. Token may be invalid.")
-                }
-                else {
-                    return ApiSuccessResponse(body = body)
+                return if (body == null || response.code() == 204) {
+                    ApiEmptyResponse()
+                } else if(response.code() == 401){
+                    ApiErrorResponse("401 Unauthorized. Token may be invalid.")
+                } else {
+                    ApiSuccessResponse(body = body)
                 }
             }
+
             else{
                 val msg = response.errorBody()?.string()
                 val errorMsg = if (msg.isNullOrEmpty()) {

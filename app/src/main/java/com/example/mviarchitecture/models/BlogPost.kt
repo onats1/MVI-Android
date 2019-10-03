@@ -40,4 +40,12 @@ data class BlogPost(
     override fun toString(): String {
         return "BlogPost(pk=$pk, title=$title, body=$body, image=$image)"
     }
+
+    override fun hashCode(): Int {
+        var result = pk ?: 0
+        result = 31 * result + (title?.hashCode() ?: 0)
+        result = 31 * result + (body?.hashCode() ?: 0)
+        result = 31 * result + (image?.hashCode() ?: 0)
+        return result
+    }
 }

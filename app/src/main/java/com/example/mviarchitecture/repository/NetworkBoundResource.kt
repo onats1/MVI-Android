@@ -2,7 +2,6 @@ package com.example.mviarchitecture.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.example.mviarchitecture.ui.main.state.MainViewState
 import com.example.mviarchitecture.utils.*
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
@@ -53,7 +52,7 @@ abstract class NetworkBoundResource<ResponseObject, ViewStateType> {
         }
     }
 
-    fun onReturnError(message: String){
+    private fun onReturnError(message: String){
         result.value = DataState.error(message)
     }
 

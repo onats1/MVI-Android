@@ -14,7 +14,7 @@ object Repository{
 
     fun getBlogPost(): LiveData<DataState<MainViewState>>{
         return Transformations
-            .switchMap(RetrofitInstance.retrofitService.getBlogPosts()){ apiResponse ->
+            .switchMap(RetrofitInstance.retrofitService.getBlogPosts()){
 
                 object: NetworkBoundResource<List<BlogPost>, MainViewState>(){
                     override fun handleApiSuccessResponse(response: ApiSuccessResponse<List<BlogPost>>) {
@@ -35,7 +35,7 @@ object Repository{
 
     fun getUser(userId: String): LiveData<DataState<MainViewState>>{
         return Transformations
-            .switchMap(RetrofitInstance.retrofitService.getUser(userId)){ apiResponse ->
+            .switchMap(RetrofitInstance.retrofitService.getUser(userId)){
 
                 object: NetworkBoundResource<User, MainViewState>(){
                     override fun handleApiSuccessResponse(response: ApiSuccessResponse<User>) {
