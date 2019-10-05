@@ -25,6 +25,7 @@ class MainFragment : Fragment(), MainRecyclerAdapter.Interaction{
         Toast.makeText(activity, "$position" + "${item.body}", Toast.LENGTH_SHORT).show()
     }
 
+
     private lateinit var viewModel: MainViewModel
 
     private lateinit var dataStateListener: DataStateListener

@@ -6,9 +6,11 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.mviarchitecture.R
+import com.example.mviarchitecture.di.viewModels.ViewModelProviderFactory
 import com.example.mviarchitecture.ui.DataStateListener
 import com.example.mviarchitecture.utils.DataState
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), DataStateListener {
 
@@ -17,6 +19,8 @@ class MainActivity : AppCompatActivity(), DataStateListener {
     }
 
     private lateinit var viewModel: MainViewModel
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

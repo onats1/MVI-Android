@@ -12,8 +12,14 @@ import com.example.mviarchitecture.ui.main.state.MainStateEvent.*
 import com.example.mviarchitecture.ui.main.state.MainViewState
 import com.example.mviarchitecture.utils.AbsentLiveData
 import com.example.mviarchitecture.utils.DataState
+import javax.inject.Inject
 
-class MainViewModel : ViewModel(){
+class MainViewModel  : ViewModel(){
+
+
+    @Inject
+    lateinit var repository: Repository
+
 
     private val _stateEvent: MutableLiveData<MainStateEvent> = MutableLiveData()
     private val _viewState:  MutableLiveData<MainViewState> = MutableLiveData()
@@ -24,16 +30,18 @@ class MainViewModel : ViewModel(){
             handleStateEvent(it)
         }
 
+
+
     private fun handleStateEvent(stateEvent: MainStateEvent): LiveData<DataState<MainViewState>>{
 
         return when(stateEvent){
             
             is GetUserEvent -> {
-              Repository.getUser(stateEvent.userId)
+              repository.getUser(stateEvent.userId)
             }
 
             is GetBlogPostEvent -> {
-               Repository.getBlogPost()
+               repository.getBlogPost()
             }
 
             is None -> {
