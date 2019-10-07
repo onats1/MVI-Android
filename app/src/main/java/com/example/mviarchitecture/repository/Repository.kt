@@ -5,16 +5,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.example.mviarchitecture.models.BlogPost
 import com.example.mviarchitecture.models.User
+import com.example.mviarchitecture.remoteDB.ApiService
 
-import com.example.mviarchitecture.remoteDB.RetrofitInstance
 import com.example.mviarchitecture.ui.main.state.MainViewState
 import com.example.mviarchitecture.utils.*
+import javax.inject.Inject
 
-object Repository{
+class Repository
+@Inject
+constructor(val apiService: ApiService){
 
     fun getBlogPost(): LiveData<DataState<MainViewState>>{
         return Transformations
-            .switchMap(RetrofitInstance.retrofitService.getBlogPosts()){
+            .switchMap(apiService.getBlogPosts()){
 
                 object: NetworkBoundResource<List<BlogPost>, MainViewState>(){
                     override fun handleApiSuccessResponse(response: ApiSuccessResponse<List<BlogPost>>) {
@@ -26,7 +29,7 @@ object Repository{
                     }
 
                     override fun createCall(): LiveData<GenericApiResponse<List<BlogPost>>> {
-                        return RetrofitInstance.retrofitService.getBlogPosts()
+                        return apiService.getBlogPosts()
                     }
 
                 }.asLiveData()
@@ -35,7 +38,7 @@ object Repository{
 
     fun getUser(userId: String): LiveData<DataState<MainViewState>>{
         return Transformations
-            .switchMap(RetrofitInstance.retrofitService.getUser(userId)){
+            .switchMap(apiService.getUser(userId)){
 
                 object: NetworkBoundResource<User, MainViewState>(){
                     override fun handleApiSuccessResponse(response: ApiSuccessResponse<User>) {
@@ -47,7 +50,7 @@ object Repository{
                     }
 
                     override fun createCall(): LiveData<GenericApiResponse<User>> {
-                        return RetrofitInstance.retrofitService.getUser("1")
+                        return apiService.getUser("1")
                     }
 
                 }.asLiveData()

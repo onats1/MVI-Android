@@ -1,7 +1,9 @@
 package com.example.mviarchitecture.ui.main
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -9,16 +11,17 @@ import com.example.mviarchitecture.R
 import com.example.mviarchitecture.di.viewModels.ViewModelProviderFactory
 import com.example.mviarchitecture.ui.DataStateListener
 import com.example.mviarchitecture.utils.DataState
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), DataStateListener {
+class MainActivity : DaggerAppCompatActivity(), DataStateListener {
 
     override fun onDataStateChanged(dataState: DataState<*>?) {
         handleDataStateChanged(dataState)
     }
 
-    private lateinit var viewModel: MainViewModel
+
 
 
 
@@ -26,11 +29,12 @@ class MainActivity : AppCompatActivity(), DataStateListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
         showFragment()
 
+    }
 
+    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
+        return super.onCreateView(name, context, attrs)
     }
 
     private fun showFragment(){

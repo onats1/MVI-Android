@@ -14,12 +14,9 @@ import com.example.mviarchitecture.utils.AbsentLiveData
 import com.example.mviarchitecture.utils.DataState
 import javax.inject.Inject
 
-class MainViewModel  : ViewModel(){
-
-
+class MainViewModel
     @Inject
-    lateinit var repository: Repository
-
+    constructor(val repository: Repository): ViewModel(){
 
     private val _stateEvent: MutableLiveData<MainStateEvent> = MutableLiveData()
     private val _viewState:  MutableLiveData<MainViewState> = MutableLiveData()

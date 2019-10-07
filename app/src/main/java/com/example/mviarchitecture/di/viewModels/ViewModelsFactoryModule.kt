@@ -1,4 +1,4 @@
-package com.example.mviarchitecture.di
+package com.example.mviarchitecture.di.viewModels
 
 import androidx.lifecycle.ViewModelProvider
 import com.example.mviarchitecture.di.viewModels.ViewModelProviderFactory
